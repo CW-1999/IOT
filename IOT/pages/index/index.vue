@@ -1,15 +1,17 @@
+<!-- 门禁页面 06271540 BY CW -->
+<!-- 修改者 	修改时间 	修改内容 -->
 <template>
 	<view class="index">
 		<!-- 自定义导航栏 Start -->
 			<view class="navigation">
 				<!-- 返回按钮 -->
 					<view class="back">
-						<image src="/static/entranceGuard/back.png" mode="aspectFit" style="width: 64upx;height: 64upx;"></image>
+						<image src="/static/entranceGuard-icon/ic-back.png" mode="aspectFit" style="width: 48upx;height: 48upx;"></image>
 					</view>
 				<!-- 返回按钮 -->
 				<!-- 门锁图标 Start-->
 					<view class="doorLock">
-						<image src="/static/entranceGuard/doorLock.png" mode="aspectFit" style="width: 192upx;height: 192upx;"></image>
+						<image src="/static/entranceGuard-icon/ic-doorLock.png" mode="aspectFit" style="width: 192upx;height: 192upx;"></image>
 					</view>
 				<!-- 门锁图标 end-->
 			</view>
@@ -34,7 +36,7 @@
 					<view class="box" v-for="(item,index) in service" :key="index">
 						<!-- 服务图标 Start-->
 							<view class="icon">
-								<image :src="item.iconpath" mode="aspectFit" style="width: 128upx;height: 128upx;"></image>
+								<image :src="item.iconpath" mode="aspectFit" style="width: 100upx;height: 100upx;"></image>
 							</view>
 						<!-- 服务图标 end-->
 						<!-- 服务名称 Start-->
@@ -101,15 +103,15 @@
 				y:0,
 				service:[
 					{
-						iconpath:"/static/entranceGuard/password.png",
+						iconpath:"/static/entranceGuard-icon/ic-password.png",
 						name:"密码管理"
 					},
 					{
-						iconpath:"/static/entranceGuard/doorCard.png",
+						iconpath:"/static/entranceGuard-icon/ic-doorCard.png",
 						name:"门卡管理"
 					},
 					{
-						iconpath:"/static/entranceGuard/userPermissions.png",
+						iconpath:"/static/entranceGuard-icon/ic-userPermissions.png",
 						name:"用户权限"
 					}
 				],
@@ -161,27 +163,33 @@
 		flex-direction column
 		align-items center
 	}
-	.index
+	.index{
 		height calc(100vh - 94upx)
+		/* #ifdef MP */
+		height 100vh
+		/* #endif */
 		width 750upx
 		background #dcdcdc;
 		Display()
-		.navigation
+		.navigation{
 			height 500upx
 			width 750upx
 			Display()
 			background linear-gradient(67deg,rgba(30, 115, 242, 1.0) 33%,rgba(95, 244, 251, 1.0) 100%)
-			.back
-				height 80upx
-				width 80upx
+			.back{
+				height 48upx
+				width 48upx
 				border-radius 50%
 				position absolute
 				z-index 100
-				top 48upx
+				top 60upx
 				left 32upx
-			.doorLock
+			}
+			.doorLock{
 				margin-top 150upx
-		.unlocking
+			}
+		}
+		.unlocking{
 			width 668upx
 			height 128upx
 			background #FFFFFF
@@ -195,11 +203,12 @@
 			font-weight bold
 			letter-spacing 1em
 			text-indent 1em
-			.text
+			.text{
 				background: linear-gradient(to right, blue, white);
 				-webkit-background-clip: text;
 				color: transparent;
-			movable-view
+			}
+			movable-view{
 				height 116upx
 				width 116upx
 				position absolute
@@ -210,23 +219,26 @@
 				font-size 80upx
 				text-align center
 				line-height 100upx
-				color #FFFFFF
-		.service
+				color #FFFFFF;
+			}
+		}
+		.service{
 			width 750upx
 			height 300upx
 			background #FFFFFF
 			display flex
 			align-items center
-			.box
+			.box{
 				height 300upx
 				width 250upx
 				Display()
 				color #333333
-				.icon
+				.icon{
 					margin-top 84upx
-					width 128upx
-					height 128upx
-				.text
+					width 100upx
+					height 100upx
+				}
+				.text{
 					margin-top 20upx
 					color #007AFF
 					font-size 32upx
@@ -234,65 +246,86 @@
 					text-align center
 					height 32upx
 					line-height 32upx
-				
-		.log
+				}	
+			}	
+		}	
+		.log{
 			margin-top 16upx
 			width 750upx
 			height calc(100vh - 907upx)
+			/* #ifdef MP */
+			height calc(100vh - 813upx)
+			/* #endif */
 			background #FFFFFF
 			border-radius 20upx
-			.top
+			.top{
 				display flex
 				justify-content space-between
-				.title
+				.title{
 					width 240upx
 					height 64upx
 					line-height 64upx
 					font-size 32upx
 					text-align center
 					font-weight bold
-				.history
+				}
+				.history{
 					text-align center
 					width 160upx
 					height 64upx
 					line-height 64upx
 					font-size 24upx
-			scroll-view
+				}
+			}
+			scroll-view{
 				height calc(100vh - 971upx)
-			.list
-				height 128upx
-				border-bottom 1upx solid #007AFF
-				position relative
-				.headPortrait
-					width 100upx
-					height 100upx
-					border-radius 50%
-					background #1ba5fb;
-					position absolute
-					top 14upx
-					left 32upx
-				.name
-					font-size 32upx
-					width 400upx
-					position absolute
-					top 16upx
-					left 164upx
-					font-weight 600
-				.time
-					font-size 24upx
-					width 400upx
-					position absolute
-					left 164upx
-					top 64upx
-				.way
-					font-size 28upx
-					position absolute
-					width 160upx
-					text-align center
-					right 32upx
-					top  42upx
-					background linear-gradient(67deg,rgba(30, 115, 242, 1.0) 33%,rgba(95, 244, 251, 1.0) 100%)
-					border-radius 20upx
-					font-weight bold
-			
+				/* #ifdef MP */
+				height calc(100vh - 877upx)
+				/* #endif */
+				.list{
+					height 128upx
+					border-bottom 1upx solid #007AFF
+					position relative
+					.headPortrait{
+						width 100upx
+						height 100upx
+						border-radius 50%
+						background #1ba5fb;
+						position absolute
+						top 14upx
+						left 32upx
+					}
+					
+					.name{
+						font-size 32upx
+						width 400upx
+						position absolute
+						top 16upx
+						left 164upx
+						font-weight 600
+					}
+					
+					.time{
+						font-size 24upx
+						width 400upx
+						position absolute
+						left 164upx
+						top 64upx
+					}
+					.way{
+						font-size 28upx
+						position absolute
+						width 160upx
+						text-align center
+						right 32upx
+						top  42upx
+						background linear-gradient(67deg,rgba(30, 115, 242, 1.0) 33%,rgba(95, 244, 251, 1.0) 100%)
+						border-radius 20upx
+						font-weight bold
+					}	
+				}	
+			}
+		}
+	}
+	
 </style>
