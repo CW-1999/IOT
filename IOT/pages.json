@@ -3,7 +3,8 @@
 		{
 		    "path" : "pages/home/home",
 		    "style" : {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "我的家",
+				"navigationStyle":"custom"
 			}
 		},
 		{
@@ -19,6 +20,24 @@
 				"navigationBarTitleText": "个人中心"
 			}
         }
+        ,{
+            "path" : "pages/my/login/login",
+            "style" : {
+				"navigationBarTitleText": "登录",
+				"navigationStyle":"custom"
+			}
+        }
+        ,{
+            "path" : "pages/my/register/register",
+            "style" : {
+				"navigationBarTitleText": "注册",
+				"navigationStyle":"custom"
+			}
+        }
+        ,{
+            "path" : "pages/home/room/room",
+            "style" : {}
+        }
     ],
 	"tabBar":{
 		"color": "#999",
@@ -27,7 +46,7 @@
 		"list": [
 			{
 			  "pagePath": "pages/home/home",
-			  "text": "首页",
+			  "text": "我的家",
 			  "iconPath": "static/tabBar-icon/ic-home.png",
 			  "selectedIconPath": "static/tabBar-icon/ic-home-select.png"
 			},

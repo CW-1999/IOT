@@ -1,146 +1,129 @@
 <!-- 首页 06271555 BY CW -->
 <!-- 修改者 	修改时间 	修改内容 -->
 <template>
-	<view>
-		<button type="primary" @click="connect">mqtt 连接</button>
-		<button type="primary" @click="subscribe">mqtt 订阅</button>
-		<button type="primary" @click="publish">mqtt 发布</button>
-		<button type="primary" @click="unsubscribe">取消订阅</button>
-		<button type="primary" @click="unconnect">断开连接</button>
-		<view>message:{{ message }}</view>
+	<view class="home">
+		<!-- 导航栏 start -->
+			<view class="title">所有房间</view>
+		<!-- 导航栏 end -->
+		<!-- 房间列表 start -->
+			<view class="list">
+				<!-- 单个房间 start -->
+					<view class="box" v-for="(item,index) in list" :key="index" @click="To(item.path)">
+						<!-- 房间icon start -->
+							<image :src="item.iconpath"></image>
+						<!-- 房间icon end -->
+						<!-- 房间名称 start -->
+							<view class="name">
+								{{item.name}}
+							</view>
+						<!-- 房间名称 end -->
+					</view>
+				<!-- 单个房间 end -->
+			</view>
+		<!-- 房间列表 end -->
 	</view>
 </template>
 
 <script>
-import mqtt from '../../utils/mqtt.js';
 export default {
 	data() {
 		return {
-			// #ifdef H5
-			host: 'ws://121.37.199.83:8083/mqtt',
-			//#endif
-			// #ifdef MP-WEIXIN || APP-PLUS
-			host: 'wxs://121.37.199.83:8083/mqtt',
-			//#endif
-			client: null,
-			//记录重连的次数
-			reconnectCounts: 0,
-			//MQTT连接的配置
-			message: "",
-			time: 1,
-			options: {
-				wsOptions: {},
-				protocolVersion: 4, //MQTT连接协议版本
-				clientId: 'H5-1740707273',
-				clean: false,
-				password: '',
-				username: '',
-				reconnectPeriod: 1000, //1000毫秒，两次重新连接之间的间隔
-				connectTimeout: 30 * 1000, //1000毫秒，两次重新连接之间的间隔
-				resubscribe: true //如果连接断开并重新连接，则会再次自动订阅已订阅的主题（默认true）
-			},
-			content: '',
-			type: 'center',
-			popup: 'popup'
-		};
+			list:[
+				{
+					iconpath:"/static/home-icon/ic-bedroom.png",
+					path:"/pages/home/room/room",
+					name:"主卧"
+				},
+				{
+					iconpath:"/static/home-icon/ic-kidsroom.png",
+					path:"/pages/home/room/room",
+					name:"侧卧"
+				},
+				{
+					iconpath:"/static/home-icon/ic-drawing-room.png",
+					path:"",
+					name:"客厅"
+				},
+				{
+					iconpath:"/static/home-icon/ic-balcony.png",
+					path:"",
+					name:"阳台"
+				},
+				{
+					iconpath:"/static/home-icon/ic-kitchen.png",
+					path:"",
+					name:"厨房"
+				},
+				{
+					iconpath:"/static/home-icon/ic-dening-room.png",
+					path:"",
+					name:"餐厅"
+				},
+				{
+					iconpath:"/static/home-icon/ic-toilet.png",
+					path:"",
+					name:"卫生间"
+				},
+			]
+		}
 	},
 	methods: {
-		// 消息刷新
-		change(e) {
-			console.log(e.show);
-		},
-		// 连接服务器
-		connect(){
-			this.client = mqtt.connect(
-				this.host,
-				this.options
-			);
-			this.client.on('connect', () => {
-				console.log('连接成功');
-			});
-			this.client.on('reconnect', error => {
-				console.log('正在重连:', error);
-			});
-			this.client.on('error', error => {
-				console.log('连接失败:', error);
-			});
-			// 为 message 时间添加处理函数
-			this.client.on('message', (topic, message) => {
-				console.log('收到来自', topic, '的消息', message.toString());
-				this.message = message.toString();
-			});
-		},
-		// 订阅消息
-		subscribe(){
-			// 判断是否已成功连接
-			if (!this.client.connected) {
-				console.log('客户端未连接');
-				return;
-			}
-
-			this.client.subscribe('one', { qos: 1 }, error => {
-					if (!error) {
-						console.log('订阅成功');
-						}
-				});
-
-			// 订阅多个主题
-			// this.client.subscribe(['one', 'two', 'three'], { qos: 1 }, err => {
-			// 	console.log(err || '订阅成功');
-			// 	this.show(err || '订阅成功');
-			// // });
-			/*
-				    // 订阅不同 qos 的不同主题
-				    this.client.subscribe(
-				        [
-				            { hello: 1 },
-				            { 'one/two/three': 2 },
-				            { '#': 0 }
-				        ],
-				        (err) => {
-				          this.show();console.log(err || '订阅成功')
-				        },
-				    )
-
-
-			});*/
-		},
-		// 发布消息
-		publish() {
-			// 判断是否已成功连接
-			if (!this.client.connected) {
-				console.log('客户端未连接');
-				return;
-			}
-			// publich(topic, payload, options/callback)
-			this.client.publish('one', this.time.toString(), error => {
-				console.log(error || '消息发布成功');
-				this.time++;
-			});
-		},
-		// 取消订阅
-		unsubscribe() {
-			this.client.unsubscribe(
-				// topic, topic Array, topic Array-Onject
-				// ['one', 'two', 'three'],
-				'one',
-				err => {
-					console.log(err || '取消订阅成功');
-				}
-			);
-		},
-		// 断开服务器连接
-		unconnect() {
-			this.client.end();
-			console.log('断开连接');
+		To(Url){
+			console.log(Url)
+			uni.navigateTo({
+				url:Url
+			})
 		}
 	}
-};
-</script>
-<style>
-button {
-	margin-top: 30upx;
-	margin-bottom: 30upx;
 }
+</script>
+<style lang="stylus">
+	Flex(){
+		display flex
+		flex-direction column
+		align-items center
+	}
+	Font(a,b,c,d,e=center){
+		font-size a
+		color b
+		line-height c
+		font-weight d
+		text-align e
+		font-family Source Han Sans CN
+	}
+	.home{
+		width 750upx
+		background #efefef;
+		Flex()
+		.title{
+			height 80upx
+			width 688upx
+			Font(40upx,#000000,80upx,bold,left)
+		}
+		.list{
+			width 688upx
+			display flex
+			flex-wrap wrap
+			justify-content space-between
+			.box{
+				margin-top 20upx
+				width 320upx
+				height 320upx
+				background #FFFFFF;
+				border-radius 20upx
+				Flex()
+				image{
+					width 128upx
+					height 128upx
+					margin-top 60upx
+					border-radius 20upx
+				}
+				.name{
+					margin-top 20upx
+					Font(32upx,#000000,32upx,bold)
+				}
+			}
+		}
+	}
 </style>
 

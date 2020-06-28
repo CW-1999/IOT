@@ -2,8 +2,6 @@
 <!-- 修改者 	修改时间 	修改内容 -->
 <template>
 	<view class="my">
-		<!-- 未登录下的界面 start -->
-			<view class="" v-if="!isLogin">
 				<!-- 头像+昵称 Box start -->
 					<view class="Box">
 						<!-- 头像+昵称 Box end -->
@@ -14,18 +12,54 @@
 						<!-- 头像 end -->
 						<!-- 昵称 start -->
 							<view class="nikename">
-									未登录
+									昵称
 							</view>
 						<!-- 昵称 end -->
 					</view>
-			</view>
-		<!-- 未登陆的界面 end -->
-		
-		<!-- 登陆后的界面 start -->
-			<view class="" v-else>
+				<!-- 头像+昵称 Box end -->
 				
-			</view>
-		<!-- 登陆后的界面 end -->
+				<!-- 工具栏 start -->
+					<view class="tool">
+						<!-- 单个工具 start -->
+							<view class="box" v-for="(item,index) in  tools" :key="index">
+								<!-- icon start -->
+									<image :src="item.iconpath"></image>
+								<!-- icon end -->
+								<!-- 名称 start -->
+									<view class="name">
+										{{item.name}}
+									</view>
+								<!-- 名称 end -->
+							</view>
+						<!-- 单个工具 end -->
+					</view>
+				<!-- 工具栏 end -->
+				
+				<!-- 功能列表start -->
+					<view class="service-list">
+						<!-- 单个功能 start -->
+							<view class="service" v-for="(item,index) in service" :key="index">
+								<!-- icon start -->
+									<image :src="item.iconpath"></image>
+								<!-- icon end -->
+								<!-- 功能名称 start -->
+									<view class="name">
+										{{item.name}}
+									</view>
+								<!-- 功能名称 end -->
+								<!-- 箭头 start -->
+									<view class="arrows">
+										>
+									</view>
+								<!-- 箭头 end -->
+								<!-- 分割线 start -->
+									<view class="line" v-if="index!=4">
+									</view>
+								<!-- 分割线 end -->
+							</view>
+						<!-- 单个功能 end -->
+					</view>
+				<!-- 功能列表end -->
 	</view>
 </template>
 
@@ -33,8 +67,62 @@
 	export default {
 		data() {
 			return {
-				isLogin:false
+				// 是否登录
+				isLogin:false,
+				// 工具列表
+				tools:[
+					{
+						iconpath:"/static/my-icon/ic-log.png",
+						name:"操作日志",
+						path:""
+					},
+					{
+						iconpath:"",
+						name:"工具1",
+						path:""
+					},
+					{
+						iconpath:"",
+						name:"工具2",
+						path:""
+					},
+				],
+				// 功能列表
+				service:[
+					{
+						iconpath:"/static/my-icon/ic-inform.png",
+						name:"通知",
+						path:""
+					},
+					{
+						iconpath:"/static/my-icon/ic-personal-data.png",
+						name:"个人信息",
+						path:""
+					},
+					{
+						iconpath:"/static/my-icon/ic-setting.png",
+						name:"设置",
+						path:""
+					},
+					{
+						iconpath:"/static/my-icon/ic-suggest.png",
+						name:"建议反馈",
+						path:""
+					},
+					{
+						iconpath:"/static/my-icon/ic-about-us.png",
+						name:"关于我们",
+						path:""
+					},
+					]
 			};
+		},
+		onLoad() {
+			if(!this.isLogin){
+				uni.navigateTo({
+					url:"login/login"
+				})
+			}
 		}
 	}
 </script>
@@ -59,7 +147,7 @@
 		height 100vh
 		/* #endif */
 		width 750upx
-		
+		background #f3f3f3;
 		Flex()
 		.Box{
 			background linear-gradient(to right,rgba(30, 115, 242, 1.0) 33%,rgba(95, 244, 251, 1.0) 100%)
@@ -75,8 +163,66 @@
 			}
 			.nikename{
 				margin-top 32upx
-				margin-bottom 32upx
+				margin-bottom 64upx
 				Font(32upx,#FFFFFF,32upx,bold)
+			}
+		}
+		.tool{
+			width 688upx
+			height 200upx
+			background #ffffff;
+			position relative
+			bottom 20upx
+			border-radius 20upx
+			display flex
+			align-items center
+			justify-content space-around
+			.box{
+				height 160upx
+				width 220upx
+				background #f3f3f3;
+				border-radius 20upx
+				Flex()
+				image{
+					width 100upx
+					height 100upx
+				}
+				.name{
+					Font(32upx,#1296db,60upx,500)
+				}
+			}
+		}
+		.service-list{
+			background #ffffff;
+			border-radius 20upx
+			.service{
+				width 688upx
+				height 100upx
+				display flex
+				align-items center
+				position relative
+				image{
+					height 64upx
+					width 64upx
+					margin-left 20upx
+				}
+				.name{
+					Font(32upx,#686868,64upx,bold)
+					margin-left 20upx
+				}
+				.arrows{
+					position absolute
+					right 28upx
+					color #C0C0C0;
+				}
+				.line{
+					width 620upx
+					height 1upx
+					background #C0C0C0;
+					position absolute
+					bottom 0upx
+					left 34upx
+				}
 			}
 		}
 	}
