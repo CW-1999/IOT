@@ -107,8 +107,8 @@ export default {
 			justify-content space-between
 			.box{
 				margin-top 20upx
-				width 320upx
-				height 320upx
+				width 334upx
+				height 334upx
 				background #FFFFFF;
 				border-radius 20upx
 				Flex()

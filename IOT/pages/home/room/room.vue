@@ -1,13 +1,44 @@
 <!-- 房间 06282217 BY CW -->
 <!-- 修改者 	修改时间 	修改内容 -->
 <template>
-	<view>
-		<button type="primary" @click="connect">mqtt 连接</button>
-		<button type="primary" @click="subscribe">mqtt 订阅</button>
-		<button type="primary" @click="publish">mqtt 发布</button>
-		<button type="primary" @click="unsubscribe">取消订阅</button>
-		<button type="primary" @click="unconnect">断开连接</button>
-		<view>message:{{ message }}</view>
+	<view class="room" :style="bg">
+		<!-- 灯泡 start -->
+			<image v-if="isLight=='1'" class="light" src="/static/home-icon/room-icon/ic-light-open.png" @click="lightUp()"></image>
+			<image v-if="isLight!='1'" class="light" src="/static/home-icon/room-icon/ic-light.png" @click="lightUp()"></image>
+		<!-- 灯泡 end -->
+		
+		<!-- 空调 start -->
+			<image v-if="isCooling=='1'" class="cooling" src="/static/home-icon/room-icon/ic-air-conditioner-open.png" @click="cooling()"></image>
+			<image v-if="isCooling!='1'" class="cooling" src="/static/home-icon/room-icon/ic-air-conditioner.png" @click="cooling()"></image>
+		<!-- 空调 end -->
+		
+		<!-- 温湿度 start -->
+			<view class="humiture">
+				<!-- 体感温度 start -->
+					<view class="temperature-text">
+						体感温度
+					</view>
+				<!-- 体感温度 end -->
+				<!-- 温度 start -->
+					<view class="temperature">
+						26°
+					</view>
+				<!-- 温度 end -->
+				<!-- 相对湿度 start -->
+					<view class="humidity">
+						相对湿度：
+						<text>85%</text>
+					</view>
+				<!-- 相对湿度 end -->
+			</view>
+		<!-- 温湿度 end -->
+		
+		<!-- 当前状态 start -->
+			<view class="state">
+				当前状态：
+				<text>离线</text>
+			</view>
+		<!-- 当前状态 end -->
 	</view>
 </template>
 
@@ -16,6 +47,12 @@ import mqtt from '../../../utils/mqtt.js';
 export default {
 	data() {
 		return {
+			// 背景颜色
+			bg:'background:linear-gradient(0deg,rgba(30, 115, 242, 1.0) 33%,rgba(95, 244, 251, 1.0) 100%);',
+			// 灯光开关状态
+			isLight:false,
+			// 空调开关状态
+			isCooling:false,
 			// #ifdef H5
 			host: 'ws://121.37.199.83:8083/mqtt',
 			//#endif
@@ -53,6 +90,34 @@ export default {
 		this.unconnect()
 	},
 	methods: {
+		// 点击灯泡
+		lightUp(){
+			//为开灯状态下
+			if(this.isLight=='1'){
+				// 发送关灯指令
+				this.publish('0')
+				this.isLight=false
+			}
+			else{
+				// 发送开灯指令
+				this.publish('1')
+				this.isLight=true
+			}
+		},
+		// 点击空调
+		cooling(){
+			//为开启状态下
+			if(this.isCooling){
+				// 发送关机指令
+				this.publish('2')
+				this.isCooling=false
+			}
+			else{
+				// 发送开机指令
+				this.publish('3')
+				this.isCooling=true
+			}
+		},
 		// 消息刷新
 		change(e) {
 			console.log(e.show);
@@ -75,7 +140,7 @@ export default {
 			// 为 message 时间添加处理函数
 			this.client.on('message', (topic, message) => {
 				console.log('收到来自', topic, '的消息', message.toString());
-				this.message = message.toString();
+				// this.isLight = message.toString();
 			});
 		},
 		// 订阅消息
@@ -114,15 +179,15 @@ export default {
 			});*/
 		},
 		// 发布消息
-		publish() {
+		publish(instruct) {
 			// 判断是否已成功连接
 			if (!this.client.connected) {
 				console.log('客户端未连接');
 				return;
 			}
 			// publich(topic, payload, options/callback)
-			this.client.publish('one', this.time.toString(), error => {
-				console.log(error || '消息发布成功');
+			this.client.publish('phone',instruct.toString(), error => {
+				console.log(error || instruct);
 				this.time++;
 			});
 		},
@@ -147,8 +212,59 @@ export default {
 </script>
 
 <style lang="stylus">
-button {
-	margin-top: 30upx
-	margin-bottom: 30upx
-}
+	Flex(){
+		display flex
+		flex-direction column
+		align-items center
+	}
+	Font(a,b,c,d,e=center){
+		font-size a
+		color b
+		line-height c
+		font-weight d
+		text-align e
+		font-family Source Han Sans CN
+	}
+	.room{
+		width 750upx
+		height calc(100vh - 88upx)
+		Flex()
+		.light{
+			width 180upx
+			height 180upx
+			margin-top 60upx
+		}
+		.cooling{
+			width 280upx
+			height 180upx
+			margin-top 60upx
+		}
+		.humiture{
+			width 500upx
+			height 500upx
+			border 10upx double #FFFFFF;
+			border-radius 50%
+			margin-top 40upx
+			Flex()
+			justify-content center
+			.temperature-text{
+				Font(28upx,#ffffff,28upx,500)
+				margin-bottom 20upx
+			}
+			.temperature{
+				Font(200upx,#ffffff,200upx,bold)
+			}
+			.humidity{
+				Font(24upx,#ffffff,24upx,500)
+				margin-top 20upx
+				text{
+					Font(28upx,#ffffff,28upx,500)
+				}
+			}
+		}
+		.state{
+			Font(32upx,#FFFFFF,32upx,500)
+			margin-top 40upx	
+		}
+	}
 </style>

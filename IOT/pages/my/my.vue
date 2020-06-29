@@ -207,7 +207,7 @@
 					margin-left 20upx
 				}
 				.name{
-					Font(32upx,#686868,64upx,bold)
+					Font(32upx,#686868,64upx,500)
 					margin-left 20upx
 				}
 				.arrows{
