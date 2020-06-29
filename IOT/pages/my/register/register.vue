@@ -63,6 +63,9 @@
 			},
 			// 提交表单
 			formSubmit(e) {
+				uni.showLoading({
+					title:"注册中"
+				})
 				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
 			    var formdata = e.detail.value
 				console.log(formdata)
@@ -72,13 +75,23 @@
 				}
 				else{
 					uni.request({
-					    url: '121.37.199.83:8888/register/register', //仅为示例，并非真实接口地址。
+					    url: 'http://121.37.199.83:8888/register/register', //仅为示例，并非真实接口地址。
 					    data: {
 					        a: formdata.account,
 							b:formdata.password
 					    },
 					    success: (res) => {
 					        console.log(res)
+							uni.hideLoading()
+							uni.showToast({
+							    title: '注册成功！',
+							    duration: 1000
+							});
+							setTimeout(()=>{
+								uni.navigateBack({
+									
+								})
+							},1000)
 					    }
 					})
 				}

@@ -66,17 +66,51 @@
 			},
 			// 提交表单
 			formSubmit(e) {
+				uni.showLoading({
+					title:"登录中"
+				})
 				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
 			    var formdata = e.detail.value
 				console.log(formdata)
 				uni.request({
-				    url: '121.37.199.83:8888/login/login', //仅为示例，并非真实接口地址。
+				    url: 'http://121.37.199.83:8888/login/login', //仅为示例，并非真实接口地址。
 				    data: {
-				        a: formdata.account
+						account:formdata.account,
+						password:formdata.password,
 				    },
 				    success: (res) => {
 				        console.log(res)
-				    }
+						uni.hideLoading()
+						if(res.data.state==1)
+						{
+							uni.showToast({
+							    title: res.data.message,
+							    duration: 1000
+							});
+							setTimeout(()=>{
+								uni.navigateBack({
+									
+								})
+							},1000)
+						}
+						else if(res.data.state==0){
+							uni.showToast({
+							    title: res.data.message,
+								icon:'none',
+							    duration: 1000
+							});
+						}
+						else{
+							uni.showToast({
+							    title: "账号未注册!",
+								icon:'none',
+							    duration: 2000
+							});
+						}
+				    },
+					fail(err) {
+						console.log(err)
+					}
 				});
 			},
 		}

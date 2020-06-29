@@ -21,7 +21,7 @@
 				<!-- 体感温度 end -->
 				<!-- 温度 start -->
 					<view class="temperature">
-						26°
+						{{wd}}°
 					</view>
 				<!-- 温度 end -->
 				<!-- 相对湿度 start -->
@@ -36,9 +36,16 @@
 		<!-- 当前状态 start -->
 			<view class="state">
 				当前状态：
-				<text>离线</text>
+				<text v-if="isConnect" style="color: #25f14d;">在线</text>
+				<text v-else style="color: #ff3300;">离线</text>
 			</view>
 		<!-- 当前状态 end -->
+		
+		<!-- 连接 start -->
+			<view class="connect" @click="btn()">
+				连接
+			</view>
+		<!-- 连接 end -->
 	</view>
 </template>
 
@@ -47,12 +54,16 @@ import mqtt from '../../../utils/mqtt.js';
 export default {
 	data() {
 		return {
+			// 连接状态
+			isConnect:false,
 			// 背景颜色
 			bg:'background:linear-gradient(0deg,rgba(30, 115, 242, 1.0) 33%,rgba(95, 244, 251, 1.0) 100%);',
 			// 灯光开关状态
 			isLight:false,
 			// 空调开关状态
 			isCooling:false,
+			// 温度
+			wd:26,
 			// #ifdef H5
 			host: 'ws://121.37.199.83:8083/mqtt',
 			//#endif
@@ -83,11 +94,13 @@ export default {
 	},
 	onLoad() {
 		// 连接mqtt服务器
-		this.connect()
+		// this.connect()
 	},
 	onUnload() {
 		// 与mqtt服务器断开连接
-		this.unconnect()
+		if(this.isConnect){
+			this.unconnect()
+		}
 	},
 	methods: {
 		// 点击灯泡
@@ -122,6 +135,16 @@ export default {
 		change(e) {
 			console.log(e.show);
 		},
+		// 点击连接按钮
+		btn(){
+			if(!this.isConnect)
+			{
+				uni.showLoading({
+					title:"正在连接"
+				})
+				this.connect()
+			}
+		},
 		// 连接服务器
 		connect(){
 			this.client = mqtt.connect(
@@ -130,6 +153,11 @@ export default {
 			);
 			this.client.on('connect', () => {
 				console.log('连接成功');
+				this.isConnect=true
+				// 订阅消息，接收温湿度信息
+				this.subscribe()
+				uni.hideLoading()
+
 			});
 			this.client.on('reconnect', error => {
 				console.log('正在重连:', error);
@@ -140,7 +168,19 @@ export default {
 			// 为 message 时间添加处理函数
 			this.client.on('message', (topic, message) => {
 				console.log('收到来自', topic, '的消息', message.toString());
-				// this.isLight = message.toString();
+				switch(topic){
+					case 'phone': console.log("控制消息")
+					switch(message.toString()){
+						case '0':console.log("关灯");break;
+						case '1':console.log("开灯");break;
+						case '2':console.log("关空调");break;
+						case '3':console.log("开空调");break;
+					}
+					;break;
+					case 'one': console.log("温湿度消息")
+					this.wd = message.toString();
+					;break;
+				}
 			});
 		},
 		// 订阅消息
@@ -242,7 +282,7 @@ export default {
 		.humiture{
 			width 500upx
 			height 500upx
-			border 10upx double #FFFFFF;
+			border 15upx double #FFFFFF;
 			border-radius 50%
 			margin-top 40upx
 			Flex()
@@ -265,6 +305,15 @@ export default {
 		.state{
 			Font(32upx,#FFFFFF,32upx,500)
 			margin-top 40upx	
+		}
+		.connect{
+			Font(32upx,#FFFFFF,64upx,500)
+			margin-top 30upx
+			letter-spacing 24upx
+			text-indent 24upx
+			background #52ff34;
+			border-radius 32upx
+			width 160upx
 		}
 	}
 </style>
