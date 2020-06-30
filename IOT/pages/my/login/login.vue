@@ -5,6 +5,9 @@
 		<!-- 返回图标 start -->
 			<!-- <image v-if="isLogin" src="/static/public-icon/return.png" @click="Return"></image> -->
 		<!-- 返回图标 end -->
+		
+		
+		
 		<!-- 标题 start -->
 			<view class="title">
 				欢迎回家
@@ -13,6 +16,10 @@
 				</view>
 			</view>
 		<!-- 标题 end -->
+		
+		<!-- 头像 start -->
+			<image class="icon" src="/static/my-icon/ic-head.png"></image>
+		<!-- 头像 end -->
 		
 		
 		<!-- 表单 start -->
@@ -143,13 +150,6 @@
 		height 100vh
 		background linear-gradient(30deg,rgba(255, 255, 255, 1.0) 25%,rgba(95, 244, 251, 1.0) 100%)
 		Flex()
-		image{
-			position absolute
-			top 24upx
-			left 20upx
-			width 64upx
-			height 64upx
-		}
 		.title{
 			Font(44upx,#000000,44upx,bold)
 			margin-top 20upx
@@ -158,8 +158,13 @@
 				margin-top 12upx
 			}
 		}
+		.icon{
+			width 128upx
+			height 128upx
+			margin-top 180upx
+		}
 		.box1{
-			margin-top 400upx
+			margin-top 120upx
 			width 688upx
 			height 80upx
 			background #ffffff;

@@ -27,7 +27,7 @@
 				<!-- 相对湿度 start -->
 					<view class="humidity">
 						相对湿度：
-						<text>85%</text>
+						<text>{{sd}}%</text>
 					</view>
 				<!-- 相对湿度 end -->
 			</view>
@@ -64,6 +64,8 @@ export default {
 			isCooling:false,
 			// 温度
 			wd:26,
+			// 湿度
+			sd:80,
 			// #ifdef H5
 			host: 'ws://121.37.199.83:8083/mqtt',
 			//#endif
@@ -177,7 +179,8 @@ export default {
 					}
 					;break;
 					case this.options.clientId: console.log("温湿度消息")
-					this.wd = message.toString();
+					this.wd = message.toString().substring(0,2);
+					this.sd = message.toString().substring(2,4);
 					;break;
 				}
 			});

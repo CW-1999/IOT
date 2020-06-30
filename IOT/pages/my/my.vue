@@ -12,7 +12,7 @@
 						<!-- 头像 end -->
 						<!-- 昵称 start -->
 							<view class="nikename">
-									{{nickname}}
+									{{account}}
 							</view>
 						<!-- 昵称 end -->
 					</view>
@@ -67,8 +67,8 @@
 	export default {
 		data() {
 			return {
-				// 账号昵称
-				nickname:"",
+				// 账号
+				account:"",
 				// 工具列表
 				tools:[
 					{
@@ -118,11 +118,10 @@
 			};
 		},
 		onLoad() {
-			this.nickname=getApp().globalData.nickname
+			this.account=getApp().globalData.account
 		},
 		onShow() {
-			this.nickname=getApp().globalData.nickname
-			console.log("onshow:"+this.nickname)
+			this.account=getApp().globalData.account
 		}
 	}
 </script>

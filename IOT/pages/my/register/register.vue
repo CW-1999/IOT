@@ -3,7 +3,7 @@
 <template>
 	<view class="register">
 		<!-- 返回图标 start -->
-			<image src="/static/public-icon/return.png" @click="Return"></image>
+			<image class="return" src="/static/public-icon/return.png" @click="Return"></image>
 		<!-- 返回图标 end -->
 		<!-- 标题 start -->
 			<view class="title">
@@ -14,6 +14,9 @@
 			</view>
 		<!-- 标题 end -->
 		
+		<!-- 头像 start -->
+			<image class="icon" src="/static/my-icon/ic-head.png"></image>
+		<!-- 头像 end -->
 		
 		<!-- 表单 start -->
 			<form @submit="formSubmit" @reset="formReset">
@@ -68,52 +71,63 @@
 				})
 				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
 			    var formdata = e.detail.value
-				if(formdata.password!=formdata.passwordAffirm)
+				console.log("账号长度:"+formdata.account.length)
+				if(formdata.account.length<6)
 				{
-					console.log("两次输入的密码不一致！")
-					uni.hideLoading()
 					uni.showToast({
-					    title: "两次输入的密码不一致！!!",
+					    title: "账号长度不得少于6位",
 						icon:'none',
 					    duration: 1000
 					});
 				}
 				else{
-					uni.request({
-					    url: 'http://121.37.199.83:8888/register/register', //仅为示例，并非真实接口地址。
-					    data: {
-					        account:formdata.account,
-							password:formdata.password
-					    },
-						method:"POST",
-						header:{
-							'content-type': 'application/x-www-form-urlencoded', 
-						},
-					    success: (res) => {
-					        console.log(res)
-							uni.hideLoading()
-							if(res.statusCode==500)
-							{
-								uni.showToast({
-								    title: "账号已注册!",
-									icon:'none',
-								    duration: 2000
-								});
-							}
-							if(res.data.state==1)
-							{
-								uni.showToast({
-								    title: '注册成功！',
-								    duration: 1500
-								})
-								setTimeout(()=>{
-									uni.navigateBack({
-										
+					if(formdata.password!=formdata.passwordAffirm)
+					{
+						console.log("两次输入的密码不一致！")
+						uni.hideLoading()
+						uni.showToast({
+						    title: "两次输入的密码不一致！!!",
+							icon:'none',
+						    duration: 1000
+						});
+					}
+					else{
+						uni.request({
+						    url: 'http://121.37.199.83:8888/register/register', //仅为示例，并非真实接口地址。
+						    data: {
+						        account:formdata.account,
+								password:formdata.password
+						    },
+							method:"POST",
+							header:{
+								'content-type': 'application/x-www-form-urlencoded', 
+							},
+						    success: (res) => {
+						        console.log(res)
+								uni.hideLoading()
+								if(res.statusCode==500)
+								{
+									uni.showToast({
+									    title: "账号已注册!",
+										icon:'none',
+									    duration: 2000
+									});
+								}
+								if(res.data.state==1)
+								{
+									uni.showToast({
+									    title: '注册成功！',
+									    duration: 1500
 									})
-								},1500)
-							}
-					    }
-					})
+									setTimeout(()=>{
+										uni.navigateBack({
+											
+										})
+									},1500)
+								}
+						    }
+						})
+					}
 				}
 			},
 		}
@@ -139,7 +153,7 @@
 		height 100vh
 		background linear-gradient(30deg,rgba(255, 255, 255, 1.0) 25%,rgba(95, 244, 251, 1.0) 100%)
 		Flex()
-		image{
+		.return{
 			position absolute
 			top 32upx
 			left 32upx
@@ -154,8 +168,13 @@
 				margin-top 12upx
 			}
 		}
+		.icon{
+			width 128upx
+			height 128upx
+			margin-top 180upx
+		}
 		.box1{
-			margin-top 400upx
+			margin-top 120upx
 			width 688upx
 			height 80upx
 			background #ffffff;
