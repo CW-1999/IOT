@@ -176,7 +176,7 @@ export default {
 						case '3':console.log("开空调");break;
 					}
 					;break;
-					case 'one': console.log("温湿度消息")
+					case this.options.clientId: console.log("温湿度消息")
 					this.wd = message.toString();
 					;break;
 				}
@@ -190,7 +190,7 @@ export default {
 				return;
 			}
 
-			this.client.subscribe('one', { qos: 1 }, error => {
+			this.client.subscribe(this.options.clientId, { qos: 1 }, error => {
 					if (!error) {
 						console.log('订阅成功');
 						this.isConnect=true
