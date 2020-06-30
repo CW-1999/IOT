@@ -88,14 +88,15 @@
 						{
 							getApp().globalData.account=formdata.account
 							getApp().globalData.nickname="已登陆"
+							console.log(getApp().globalData.nickname)
 							console.log("当前登陆账号："+getApp().globalData.account)
 							uni.showToast({
 							    title: res.data.message,
 							    duration: 1000
 							});
 							setTimeout(()=>{
-								uni.navigateBack({
-									
+								uni.switchTab({
+									url:"../../home/home"
 								})
 							},1000)
 						}

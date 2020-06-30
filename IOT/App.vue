@@ -11,7 +11,7 @@
 			if(!getApp().globalData.isLogin)
 			{
 				uni.navigateTo({
-					url:"pages/my/login/login"
+				url:"pages/my/login/login"
 				})
 			}
 		},

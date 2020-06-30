@@ -169,7 +169,7 @@
 		height 100vh
 		/* #endif */
 		width 750upx
-		background #dcdcdc;
+		background #F6F7FB;
 		Display()
 		.navigation{
 			height 500upx

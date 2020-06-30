@@ -118,15 +118,11 @@
 			};
 		},
 		onLoad() {
-			// console.log(getApp().globalData.isLogin)
-			// if(!getApp().globalData.isLogin){
-			// 	uni.navigateTo({
-			// 		url:"login/login"
-			// 	})
-			// }
+			this.nickname=getApp().globalData.nickname
 		},
 		onShow() {
 			this.nickname=getApp().globalData.nickname
+			console.log("onshow:"+this.nickname)
 		}
 	}
 </script>
@@ -151,11 +147,14 @@
 		height 100vh
 		/* #endif */
 		width 750upx
-		background #f3f3f3;
+		background #F6F7FB;
 		Flex()
 		.Box{
-			background linear-gradient(to right,rgba(30, 115, 242, 1.0) 33%,rgba(95, 244, 251, 1.0) 100%)
+			// background linear-gradient(to right,rgba(30, 115, 242, 1.0) 33%,rgba(95, 244, 251, 1.0) 100%)
+			background-image url(/static/my-icon/background.png)
+			background-size 750upx 446upx
 			width 750upx
+			height 446upx
 			Flex()
 			.head-portrait{
 				width 128upx
@@ -167,7 +166,6 @@
 			}
 			.nikename{
 				margin-top 32upx
-				margin-bottom 64upx
 				Font(32upx,#FFFFFF,32upx,bold)
 			}
 		}
@@ -176,7 +174,7 @@
 			height 200upx
 			background #ffffff;
 			position relative
-			bottom 20upx
+			bottom 60upx
 			border-radius 20upx
 			display flex
 			align-items center
@@ -199,6 +197,8 @@
 		.service-list{
 			background #ffffff;
 			border-radius 20upx
+			position relative
+			bottom 40upx
 			.service{
 				width 688upx
 				height 100upx

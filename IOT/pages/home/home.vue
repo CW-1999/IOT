@@ -67,6 +67,9 @@ export default {
 			]
 		}
 	},
+	onLoad() {
+		console.log("home show")
+	},
 	methods: {
 		To(Url){
 			console.log(Url)
@@ -93,7 +96,7 @@ export default {
 	}
 	.home{
 		width 750upx
-		background #efefef;
+		background #F6F7FB;
 		Flex()
 		.title{
 			height 80upx
@@ -106,7 +109,7 @@ export default {
 			flex-wrap wrap
 			justify-content space-between
 			.box{
-				margin-top 20upx
+				margin-bottom 20upx
 				width 334upx
 				height 334upx
 				background #FFFFFF;
