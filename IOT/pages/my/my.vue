@@ -12,7 +12,7 @@
 						<!-- 头像 end -->
 						<!-- 昵称 start -->
 							<view class="nikename">
-									昵称
+									{{nickname}}
 							</view>
 						<!-- 昵称 end -->
 					</view>
@@ -67,8 +67,8 @@
 	export default {
 		data() {
 			return {
-				// 是否登录
-				isLogin:false,
+				// 账号昵称
+				nickname:"",
 				// 工具列表
 				tools:[
 					{
@@ -118,11 +118,15 @@
 			};
 		},
 		onLoad() {
-			if(!this.isLogin){
-				uni.navigateTo({
-					url:"login/login"
-				})
-			}
+			// console.log(getApp().globalData.isLogin)
+			// if(!getApp().globalData.isLogin){
+			// 	uni.navigateTo({
+			// 		url:"login/login"
+			// 	})
+			// }
+		},
+		onShow() {
+			this.nickname=getApp().globalData.nickname
 		}
 	}
 </script>

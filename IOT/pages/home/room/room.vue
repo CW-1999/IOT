@@ -79,7 +79,7 @@ export default {
 			options: {
 				wsOptions: {},
 				protocolVersion: 4, //MQTT连接协议版本
-				clientId: 'H5-1740707273',
+				clientId: '',
 				clean: false,
 				password: '',
 				username: '',
@@ -93,8 +93,8 @@ export default {
 		};
 	},
 	onLoad() {
-		// 连接mqtt服务器
-		// this.connect()
+		// 把mqtt连接号设为登录账号
+		this.options.clientId=getApp().globalData.account
 	},
 	onUnload() {
 		// 与mqtt服务器断开连接
@@ -153,7 +153,6 @@ export default {
 			);
 			this.client.on('connect', () => {
 				console.log('连接成功');
-				this.isConnect=true
 				// 订阅消息，接收温湿度信息
 				this.subscribe()
 				uni.hideLoading()
@@ -194,6 +193,7 @@ export default {
 			this.client.subscribe('one', { qos: 1 }, error => {
 					if (!error) {
 						console.log('订阅成功');
+						this.isConnect=true
 						}
 				});
 

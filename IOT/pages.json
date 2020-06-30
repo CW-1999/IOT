@@ -36,7 +36,9 @@
         }
         ,{
             "path" : "pages/home/room/room",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "我的家"
+			}
         }
     ],
 	"tabBar":{

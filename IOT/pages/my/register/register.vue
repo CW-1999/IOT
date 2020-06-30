@@ -68,30 +68,50 @@
 				})
 				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
 			    var formdata = e.detail.value
-				console.log(formdata)
 				if(formdata.password!=formdata.passwordAffirm)
 				{
 					console.log("两次输入的密码不一致！")
+					uni.hideLoading()
+					uni.showToast({
+					    title: "两次输入的密码不一致！!!",
+						icon:'none',
+					    duration: 1000
+					});
 				}
 				else{
 					uni.request({
 					    url: 'http://121.37.199.83:8888/register/register', //仅为示例，并非真实接口地址。
 					    data: {
-					        a: formdata.account,
-							b:formdata.password
+					        account:formdata.account,
+							password:formdata.password
 					    },
+						method:"POST",
+						header:{
+							'content-type': 'application/x-www-form-urlencoded', 
+						},
 					    success: (res) => {
 					        console.log(res)
 							uni.hideLoading()
-							uni.showToast({
-							    title: '注册成功！',
-							    duration: 1000
-							});
-							setTimeout(()=>{
-								uni.navigateBack({
-									
+							if(res.statusCode==500)
+							{
+								uni.showToast({
+								    title: "账号已注册!",
+									icon:'none',
+								    duration: 2000
+								});
+							}
+							if(res.data.state==1)
+							{
+								uni.showToast({
+								    title: '注册成功！',
+								    duration: 1500
 								})
-							},1000)
+								setTimeout(()=>{
+									uni.navigateBack({
+										
+									})
+								},1500)
+							}
 					    }
 					})
 				}

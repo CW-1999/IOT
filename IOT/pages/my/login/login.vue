@@ -3,7 +3,7 @@
 <template>
 	<view class="login">
 		<!-- 返回图标 start -->
-			<image src="/static/public-icon/return.png" @click="Return"></image>
+			<!-- <image v-if="isLogin" src="/static/public-icon/return.png" @click="Return"></image> -->
 		<!-- 返回图标 end -->
 		<!-- 标题 start -->
 			<view class="title">
@@ -54,7 +54,6 @@
 	export default {
 		data() {
 			return {
-				
 			};
 		},
 		methods:{
@@ -78,11 +77,18 @@
 						account:formdata.account,
 						password:formdata.password,
 				    },
+					method:"POST",
+					header:{
+						'content-type': 'application/x-www-form-urlencoded', 
+					},
 				    success: (res) => {
 				        console.log(res)
 						uni.hideLoading()
 						if(res.data.state==1)
 						{
+							getApp().globalData.account=formdata.account
+							getApp().globalData.nickname="已登陆"
+							console.log("当前登陆账号："+getApp().globalData.account)
 							uni.showToast({
 							    title: res.data.message,
 							    duration: 1000
